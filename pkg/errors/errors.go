@@ -61,3 +61,18 @@ func NewEgressURLError(url string) error {
 		message:   fmt.Sprintf("egressURL error: %s", url),
 	}
 }
+
+type KmsError struct {
+	message string
+}
+
+// Ensure KmsError implements the error interface
+var _ error = &KmsError{}
+
+func (k *KmsError) Error() string { return k.message }
+
+func NewKmsError(msg string) error {
+	return &KmsError{
+		message: msg,
+	}
+}
