@@ -343,6 +343,13 @@ func (a *AwsVerifier) createEC2Instance(input createEC2InstanceInput) (string, e
 		if err := a.AwsClient.TerminateEC2Instance(input.ctx, instanceID); err != nil {
 			return instanceID, handledErrors.NewGenericError(err)
 		}
+
+		// Your logic here to find out if we hit a KMS error
+		kmsError := true
+		if kmsError {
+			return "", handledErrors.NewKmsError("encountered issue accessing KMS key when launching instance.")
+		}
+
 		return "", fmt.Errorf("%s: terminated %s after timing out waiting for instance to be running", err, instanceID)
 	}
 
